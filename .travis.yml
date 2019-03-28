@@ -1,0 +1,25 @@
+sudo : required
+services:
+  - docker
+
+before_install: #build a test version of the client project
+  #need to build an image of the development dockerfile for the tests
+  - docker build -t kabilan93/react-test -f ./client/Dockerfile.dev ./client
+
+script: # primary test running section, if any script exits with a error code other than 0 travis assumes that the build fails
+  - docker run kabilan93/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t kabilan93/multi-client ./client
+  - docker build -t kabilan93/multi-nginx ./nginx
+  - docker build -t kabilan93/multi-server ./server
+  - docker build -t kabilan93/multi-worker ./client
+
+  # log in to the docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # take those images and push them to docker hub
+  - docker push kabilan93/multi-client
+  - docker push kabilan93/multi-nginx  
+  - docker push kabilan93/multi-server
+  - docker push kabilan93/multi-worker
