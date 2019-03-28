@@ -13,7 +13,7 @@ after_success:
   - docker build -t kabilan93/multi-client ./client
   - docker build -t kabilan93/multi-nginx ./nginx
   - docker build -t kabilan93/multi-server ./server
-  - docker build -t kabilan93/multi-worker ./client
+  - docker build -t kabilan93/multi-worker ./worker
 
   # log in to the docker cli
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
@@ -23,4 +23,3 @@ after_success:
   - docker push kabilan93/multi-nginx  
   - docker push kabilan93/multi-server
   - docker push kabilan93/multi-worker
-  
