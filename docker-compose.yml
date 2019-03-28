@@ -1,0 +1,45 @@
+version: '3'
+services:
+  postgres:
+    image: 'postgres:latest'
+  redis:
+    image: 'redis:latest'
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '4000:80'
+  api:
+    build: 
+      dockerfile: Dockerfile.dev #just the file name
+      context: ./server # used to identify which directory to get the file from
+    volumes:
+      - /app/node_modules #dont do anything to this folder
+      - ./server:/app #local volume : container volume
+    environment: # dont use the syntax {key = "something"} the keys will be taken from the machine runninng the docker-compose file
+      - REDIS_HOST=redis # can just use the service name to reference the host service
+      - REDIS_PORT=6379
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+  client:
+    build: 
+      dockerfile: Dockerfile.dev #just the file name
+      context: ./client # used to identify which directory to get the file from
+    volumes:
+      - /app/node_modules #dont do anything to this folder
+      - ./client:/app #local volume : container volume
+  worker:
+    build: 
+      dockerfile: Dockerfile.dev #just the file name
+      context: ./worker # used to identify which directory to get the file from
+    volumes:
+      - /app/node_modules #dont do anything to this folder
+      - ./worker:/app #local volume : container volume
+    environment: # dont use the syntax {key = "something"} the keys will be taken from the machine runninng the docker-compose file
+      - REDIS_HOST=redis # can just use the service name to reference the host service
+      - REDIS_PORT=6379
