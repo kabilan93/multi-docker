@@ -1,0 +1,41 @@
+{
+    "AWSRBDockerrunVersion":2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "kabilan93/multi-client",
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name": "server",
+            "image": "kabilan93/multi-server",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name": "worker",
+            "image": "kabilan93/multi-worker",
+            "hostname": "worker",
+            "essential": false
+        },
+        {
+            "name": "worker",
+            "image": "kabilan93/multi-worker",
+            "hostname": "worker",
+            "essential": false
+        },
+        {
+            "name": "nginx",
+            "image": "kabilan93/multi-worker",
+            "essential": true,
+            "portMappingns":[
+                {
+                    "hostport": 80,
+                    "container": 80
+                }
+            ],
+            "links": [ "client", "server" ]
+        }
+    ]
+}
