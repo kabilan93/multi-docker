@@ -33,7 +33,7 @@
             "name": "nginx",
             "image": "kabilan93/multi-worker",
             "essential": true,
-            "portMappings":[
+            "portMappingns":[
                 {
                     "hostport": 80,
                     "container": 80
