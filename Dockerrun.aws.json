@@ -24,7 +24,7 @@
         },
         {
             "name": "nginx",
-            "image": "kabilan93/multi-worker",
+            "image": "kabilan93/multi-nginx",
             "essential": true,
             "portMappings":[
                 {
